@@ -1,0 +1,299 @@
+var freqData1=[{
+	State: 'I',
+	freq: [{
+		'grade': 'A1',
+		'value': 47
+	}, {
+		'grade': 'A2',
+		'value': 13
+	}, {
+		'grade': 'B1',
+		'value': 2
+	}, {
+		'grade': 'B2',
+		'value': 4
+	}, {
+		'grade': 'C1',
+		'value': 10
+	}, {
+		'grade': 'C2',
+		'value': 1
+	}, {
+		'grade': 'D1',
+		'value': 10
+	}, {
+		'grade': 'D2',
+		'value': 5
+	}, {
+		'grade': 'E',
+		'value': 50
+	}]
+}, {
+	State: 'II',
+	freq: [{
+		'grade': 'A1',
+		'value': 11
+	}, {
+		'grade': 'A2',
+		'value': 4
+	}, {
+		'grade': 'B1',
+		'value': 6
+	}, {
+		'grade': 'B2',
+		'value': 9
+	}, {
+		'grade':'C1',
+	   'value':10
+	},
+    {  'grade': 'C2',
+		'value': 11
+	}, {
+		'grade': 'D1',
+		'value': 5
+	}, {
+		'grade': 'D2',
+		'value': 5
+	}, {
+		'grade': 'E',
+		'value': 3
+	}]
+}, {
+	State: 'III',
+	freq: [{
+		'grade': 'A1',
+		'value': 9
+	}, {
+		'grade': 'A2',
+		'value': 21
+	}, {
+		'grade': 'B1',
+		'value': 4
+	}, {
+		'grade': 'B2',
+		'value': 4
+	}, {
+		'grade': 'C1',
+		'value': 10
+	}, {
+		'grade': 'C2',
+		'value': 10
+	}, {
+		'grade': 'D1',
+		'value': 10
+	}, {
+		'grade': 'D2',
+		'value': 5
+	}, {
+		'grade': 'E',
+		'value': 3
+	}]
+}, {
+	State: 'IV',
+	freq: [{
+		'grade': 'A1',
+		'value': 8
+	}, {
+		'grade': 'A2',
+		'value': 11
+	}, {
+		'grade': 'B1',
+		'value': 18
+	}, {
+		'grade': 'B2',
+		'value': 4
+	}, {
+		'grade': 'C1',
+		'value': 11
+	}, {
+		'grade': 'C2',
+		'value': 9
+	}, {
+		'grade': 'D1',
+		'value': 10
+	}, {
+		'grade': 'D2',
+		'value': 5
+	}, {
+		'grade': 'E',
+		'value': 5
+	}]
+}, {
+	State: 'V',
+	freq: [{
+			'grade': 'A1',
+			'value': 44
+		}, {
+			'grade': 'A2',
+			'value': 33
+		}, {
+			'grade': 'B1',
+			'value': 9
+		}, {
+			'grade': 'B2',
+			'value': 4
+		}, {
+			'grade': 'C1',
+			'value': 10
+		}, {
+			'grade': 'C2',
+			'value': 11
+		}, {
+		  'grade': 'D1',
+		  'value': 10
+	
+}, {
+	'grade': 'D2',
+	'value': 5
+}, {
+	'grade': 'E',
+	'value': 3
+}]
+}, {
+	State: 'VI',
+	freq: [{
+		'grade': 'A1',
+		'value': 16
+	}, {
+		'grade': 'A2',
+		'value': 1
+	}, {
+		'grade': 'B1',
+		'value': 10
+	}, {
+		'grade': 'B2',
+		'value': 4
+	}, {
+		'grade': 'C1',
+		'value': 10
+	}, {
+		'grade': 'C2',
+		'value': 21
+	}, {
+		'grade': 'D1',
+		'value': 20
+	}, {
+		'grade': 'D2',
+		'value': 5
+	}, {
+		'grade': 'E',
+		'value': 3
+	}]
+}, {
+	State: 'VII',
+	freq: [{
+			'grade': 'A1',
+			'value': 18
+		}, {
+			'grade': 'A2',
+			'value': 2
+		}, {
+			'grade': 'B1',
+			'value': 12
+		}, {
+			'grade': 'B2',
+			'value': 4
+		}, {
+			'grade': 'C1',
+			'value': 10
+		}, {'grade': 'C2', 'value': 11
+	},
+		   {'grade': 'D1',
+	'value': 10
+}, {'grade': 'D2', 'value': 5
+}, {
+	'grade': 'E',
+	'value': 8
+}]
+}, {
+	State: 'VIII',
+	freq: [{
+		'grade': 'A1',
+		'value': 44
+	}, {
+		'grade': 'A2',
+		'value': 38
+	}, {
+		'grade': 'B1',
+		'value': 9
+	}, {
+		'grade': 'B2',
+		'value': 4
+	}, {
+		'grade': 'C1',
+		'value': 10
+	}, {
+		'grade': 'C2',
+		'value': 1
+	}, {
+		'grade': 'D1',
+		'value': 10
+	}, {
+		'grade': 'D2',
+		'value': 5
+	}, {
+		'grade': 'E',
+		'value': 3
+	}]
+}, {
+	State: 'IX',
+	freq: [{
+		'grade': 'A1',
+		'value': 7
+	}, {
+		'grade': 'A2',
+		'value': 18
+	}, {
+		'grade': 'B1',
+		'value': 15
+	}, {
+		'grade': 'B2',
+		'value': 4
+	}, {
+		'grade': 'C1',
+		'value': 10
+	}, {
+		'grade': 'C2',
+		'value': 10
+	}, {
+		'grade': 'D1',
+		'value': 10
+	}, {
+		'grade': 'D2',
+		'value': 5
+	}, {
+		'grade': 'E',
+		'value': 10
+	}]
+}, {
+	State: 'X',
+	freq: [{
+		'grade': 'A1',
+		'value': 1
+	}, {
+		'grade': 'A2',
+		'value': 30
+	}, {
+		'grade': 'B1',
+		'value': 4
+	}, {
+		'grade': 'B2',
+		'value': 4
+	}, {
+		'grade': 'C1',
+		'value': 10
+	}, {
+		'grade': 'C2',
+		'value': 11
+	}, {
+		'grade': 'D1',
+		'value': 10
+	}, {
+		'grade': 'D2',
+		'value': 5
+	}, {
+		'grade': 'E',
+		'value': 41
+	}]
+}
+];
