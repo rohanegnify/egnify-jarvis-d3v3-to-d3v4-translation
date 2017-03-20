@@ -1,0 +1,30 @@
+svg {
+    background-color: #FFF;
+}
+
+td {
+    padding: 0 15px 0 15px;
+    text-align: center;
+}
+
+path:hover {
+    fill: #F50057;
+    cursor: pointer;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 12px;
+    padding: 8px;
+    margin-top: -20px;
+    font: 10px sans-serif;
+    background: #ddd;
+    pointer-events: none;
+}
+
+.make_bold {
+    font-size: 30px;
+    font-weight: bold;
+}
