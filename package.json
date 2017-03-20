@@ -1,0 +1,20 @@
+{
+  "name": "jarvis-source",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "live-server . --port=8081 --ignore=./.git/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohanegnify/egnify-jarvis-d3v3-to-d3v4-translation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rohanegnify/egnify-jarvis-d3v3-to-d3v4-translation/issues"
+  },
+  "homepage": "https://github.com/rohanegnify/egnify-jarvis-d3v3-to-d3v4-translation#readme"
+}

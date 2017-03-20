@@ -1,52 +1,3 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
- <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<style>
-path {  stroke: #fff; }
-path:hover {  opacity:0.9; }
-rect:hover {  fill:blue; }
-.axis {  font: 10px sans-serif; }
-.legend tr{    border-bottom:1px solid grey; }
-.legend tr:first-child{    border-top:1px solid grey; }
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {  display: none; }
-.legend{
-    margin-bottom:26px;
-    display:inline-block;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}
-.legend td{
-    padding:4px 5px;
-    vertical-align:bottom;
-}
-.legendFreq, .legendPerc{
-    align:right;
-    width:50px;
-}
-
-</style>
-<body>
-<div class="container text-center">
-  <div class="row">
-  	<div class="col-sm-12">
-  		<div id='dashboard'></div>
-  	</div>
-  </div>
-</div>
-
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script>
 function dashboard(id, fData){
     var barColor = 'steelblue';
     function segColor(c){ return {A1:"#0F4FA0", A2:"#2196F3",B1:"#4CAF50",B2:"#8BC34A", C1:"#FFB300",C2:"#FFCA28",D1:"#5B2A22", D2:"#795548",E:"#F4201F"}[c]; }
@@ -55,10 +6,9 @@ function dashboard(id, fData){
     fData.forEach(function(d){
         d.total=d.freq.A1+d.freq.A2+d.freq.B1+d.freq.B2+d.freq.C1+d.freq.C2+d.freq.D1+d.freq.D2+d.freq.E;});
    
-    
     // function to handle histogram.
     function histoGram(fD){
-        var hG={},    hGDim = {t: 20, r: 0, b: 10, l: 0};
+        var hG={} ,hGDim = {t: 20, r: 0, b: 10, l: 0};
         hGDim.w = 500 - hGDim.l - hGDim.r, 
         hGDim.h = 300 - hGDim.t - hGDim.b;
             
@@ -70,27 +20,27 @@ function dashboard(id, fData){
             .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")")
                     
         // create function for x-axis mapping.
-        var x = d3.scale.ordinal().rangeRoundBands([0, hGDim.w], 0.1)
+        var x = d3.scaleBand().rangeRound([0, hGDim.w]).padding( 0.1)
                 .domain(fD.map(function(d) { return d[0]; }));
         
         // Add x-axis to the histogram svg.
         hGsvg.append("g").attr("class", "x axis")
             .attr("transform", "translate(0," + hGDim.h + ")")
-            .call(d3.svg.axis().scale(x).orient("bottom"));
+            .call(d3.axisBottom().scale(x));
 
         // Create function for y-axis map.
-        var y = d3.scale.linear().range([hGDim.h, 0])
+        var y = d3.scaleLinear().range([hGDim.h, 0])
                 .domain([0, d3.max(fD, function(d) { return d[1]; })]);
 
         // Create bars for histogram to contain rectangles and freq labels.
         var bars = hGsvg.selectAll(".bar").data(fD).enter()
                 .append("g").attr("class", "bar");
-        
+        // debugger;
         //create the rectangles.
         bars.append("rect")
             .attr("x", function(d) { return x(d[0]); })
             .attr("y", function(d) { return y(d[1]); })
-            .attr("width", x.rangeBand())
+            .attr("width", x.bandwidth())
             .attr("height", function(d) { return hGDim.h - y(d[1]); })
             .attr('fill',barColor)
             .on("mouseover",mouseover)// mouseover is defined beA1.
@@ -98,7 +48,7 @@ function dashboard(id, fData){
             
         //Create the frequency labels above the rectangles.
         bars.append("text").text(function(d){ return d3.format(",")(d[1])})
-            .attr("x", function(d) { return x(d[0])+x.rangeBand()/2; })
+            .attr("x", function(d) { return x(d[0])+x.bandwidth()/2; })
             .attr("y", function(d) { return y(d[1])-5; })
             .attr("text-anchor", "A2dle");
         
@@ -152,10 +102,10 @@ function dashboard(id, fData){
             .attr("transform", "translate("+pieDim.w/2+","+pieDim.h/2+")");
         
         // create function to draw the arcs of the pie slices.
-        var arc = d3.svg.arc().outerRadius(pieDim.r - 10).innerRadius(0);
+        var arc = d3.arc().outerRadius(pieDim.r - 10).innerRadius(0);
 
         // create a function to compute the pie slice angles.
-        var pie = d3.layout.pie().sort(null).value(function(d) { return d.freq; });
+        var pie = d3.pie().sort(null).value(function(d) { return d.freq; });
 
         // Draw the pie slices.
         piesvg.selectAll("path").data(pie(pD)).enter().append("path").attr("d", arc)
@@ -250,21 +200,17 @@ function dashboard(id, fData){
         pC = pieChart(tF), // create the pie-chart.
         leg= legend(tF);  // create the legend.
 }
-</script>
 
-<script>
 var freqData=[
-{State:'I',freq:{A1:47, A2:13, B1:2,B2:4,C1:10,C2:1,D1:10,D2:5,E:50}}
-,{State:'II',freq:{A1:11, A2:4, B1:6,B2:9,C1:10,C2:11,D1:0,D2:5,E:3}}
-,{State:'III',freq:{A1:9, A2:21, B1:4,B2:4,C1:10,C2:10,D1:10,D2:5,E:3}}
-,{State:'IV',freq:{A1:8, A2:11, B1:18,B2:4,C1:11,C2:9,D1:10,D2:5,E:5}}
-,{State:'V',freq:{A1:44, A2:33, B1:9,B2:4,C1:10,C2:11,D1:10,D2:5,E:3}}
-,{State:'VI',freq:{A1:16, A2:1, B1:10,B2:4,C1:10,C2:21,D1:20,D2:5,E:3}}
-,{State:'VII',freq:{A1:18, A2:2, B1:12,B2:4,C1:10,C2:11,D1:10,D2:5,E:8}}
-,{State:'VIII',freq:{A1:44, A2:38, B1:9,B2:4,C1:10,C2:1,D1:10,D2:5,E:3}}
-,{State:'IX',freq:{A1:7, A2:18, B1:15,B2:4,C1:10,C2:10,D1:10,D2:5,E:10}}
-,{State:'X',freq:{A1:1, A2:30, B1:4,B2:4,C1:10,C2:11,D1:10,D2:5,E:41}}
+{State:'I',freq:{A1:47, A2:13, B1:2,B2:4,C1:10,C2:1,D1:10,D2:5,E:50}},
+{State:'II',freq:{A1:11, A2:4, B1:6,B2:9,C1:10,C2:11,D1:0,D2:5,E:3}},
+{State:'III',freq:{A1:9, A2:21, B1:4,B2:4,C1:10,C2:10,D1:10,D2:5,E:3}},
+{State:'IV',freq:{A1:8, A2:11, B1:18,B2:4,C1:11,C2:9,D1:10,D2:5,E:5}},
+{State:'V',freq:{A1:44, A2:33, B1:9,B2:4,C1:10,C2:11,D1:10,D2:5,E:3}},
+{State:'VI',freq:{A1:16, A2:1, B1:10,B2:4,C1:10,C2:21,D1:20,D2:5,E:3}},
+{State:'VII',freq:{A1:18, A2:2, B1:12,B2:4,C1:10,C2:11,D1:10,D2:5,E:8}},
+{State:'VIII',freq:{A1:44, A2:38, B1:9,B2:4,C1:10,C2:1,D1:10,D2:5,E:3}},
+{State:'IX',freq:{A1:7, A2:18, B1:15,B2:4,C1:10,C2:10,D1:10,D2:5,E:10}},
+{State:'X',freq:{A1:1, A2:30, B1:4,B2:4,C1:10,C2:11,D1:10,D2:5,E:41}}
 ];
 dashboard('#dashboard',freqData);
-
-</script>
