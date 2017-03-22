@@ -17,7 +17,6 @@ var margin = {
     width = 740 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-var scalingConstant = 2;
 var unselectedList = [];
 var YScale = updateYscale(unselectedList);
 
@@ -34,9 +33,9 @@ function updateYscale(ignoreList){
 }
 
 function removeUnselectedClassRooms(arrayData, ignoreList) {
-    // if(ignoreList.length === 0)
-    // return arrayData
-    return arrayData.filter(function(d,e,f,g,h){
+    var unselectedSet = new Set(unselectedList);
+    return arrayData.filter(function(d,i){
+        return ! unselectedSet.has(i)
         return true;
     });
 }
