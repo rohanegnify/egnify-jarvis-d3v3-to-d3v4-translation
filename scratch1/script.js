@@ -24,7 +24,7 @@ function updateYscale(ignoreList) {
     return d3.scaleLinear()
         .domain([0, d3.max(freqData, function (d) {
             var cumulative = 0;
-            var temp = removeUnselectedClassRooms(d.freq, ignoreList);
+            var temp = removeUnselectedGrades(d.freq, ignoreList);
             return d3.max(temp, function (e) {
                 return cumulative += e.value;
             })
@@ -32,7 +32,7 @@ function updateYscale(ignoreList) {
         .range([0, height]);
 }
 
-function removeUnselectedClassRooms(arrayData, ignoreList) {
+function removeUnselectedGrades(arrayData, ignoreList) {
     var unselectedSet = new Set(unselectedList);
     return arrayData.filter(function (d, i) {
         return !unselectedSet.has(i)
@@ -71,7 +71,7 @@ legend.append('rect')
     })
     .on('mouseup', function (d,i) {                 //_
         if(unselectedList.length === gradeToUnselectedListIndex.range().length - 1)
-        clearTimeout(pressLegendTimer);
+            clearTimeout(pressLegendTimer);         // |
         if(unselectedList.length !== gradeToUnselectedListIndex.range().length - 1 || unselectedList.indexOf(i) !== -1){
                 var unselectedSet = new Set(unselectedList);
             if(unselectedSet.has(i))
@@ -90,7 +90,7 @@ legend.append('rect')
             pressLegendTimer = null;
             var unselectedSet = new Set(gradeToUnselectedListIndex.range());
             unselectedSet.delete(i);
-            if(unselectedList.length !== gradeToUnselectedListIndex.range().length())
+            if(unselectedList.length !== gradeToUnselectedListIndex.range().length)
                 originalUnselectedList = unselectedList;
             unselectedList = Array.from(unselectedSet);
             update();
@@ -185,7 +185,7 @@ canvas
             pressGraphTimer = null;
             var unselectedSet = new Set(gradeToUnselectedListIndex.range());
             unselectedSet.delete(i);
-            if(unselectedList.length !== gradeToUnselectedListIndex.range().length())
+            if(unselectedList.length !== gradeToUnselectedListIndex.range().length)
                 originalUnselectedList = unselectedList; // store unselectedList in temp variable
             unselectedList = Array.from(unselectedSet);
             update();
