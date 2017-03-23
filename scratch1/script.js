@@ -42,8 +42,8 @@ function removeUnselectedClassRooms(arrayData, ignoreList) {
 
 var canvas = d3.select('body') //d3 dom pointer to canvas. canvas here indicates drawing area. NOT html5 canvas
     .append('svg') // now points to svg
-    .attr('width', 1280)
-    .attr('height', 900);
+    .attr('width', 740)
+    .attr('height', 400);
 
 var legend = canvas.append('g')
     .attr('class', 'legend_class')
@@ -62,14 +62,51 @@ legend.append('rect')
         return color(d);
     })
     .on('click', function (d,i) {
-        var unselectedSet = new Set(unselectedList);
-        if(unselectedSet.has(i))
-            unselectedSet.delete(i);
-        else
-            unselectedSet.add(i);
-        unselectedList = Array.from(unselectedSet);
+        if(unselectedList.length !== gradeToUnselectedListIndex.range().length - 1 || unselectedList.indexOf(i) !== -1){
+                var unselectedSet = new Set(unselectedList);
+            if(unselectedSet.has(i))
+                unselectedSet.delete(i);
+            else
+                unselectedSet.add(i);
+            unselectedList = Array.from(unselectedSet);
+        }
+        else{
+            unselectedList = [];
+        }
         update();
-    });
+    })
+    .on('mouseover', function (d) {
+        d3.select(this)
+            .style('opacity', 0.75);
+    })
+    .on('mouseout', function (d) {
+        d3.select(this)
+            .style('opacity', 1);
+    })
+    .on('mouseup', function (d) {                   //_
+        clearTimeout(pressLegendTimer);             // |
+    })                                              // |
+    .on('mousedown', function (d,i) {               // |
+        pressLegendTimer = window.setTimeout(function() { //implementation of LongPress functionality with some funny behaviour. It calls click when I release apart from calling mouseUp
+            var unselectedSet = new Set(gradeToUnselectedListIndex.range());
+            unselectedSet.delete(i);
+            unselectedList = Array.from(unselectedSet);
+            update();
+        },1000);                                    // |
+    });                                             //_|;
+
+legend.append('text')
+    .text(function (d) {
+        return d;
+    })
+    .attr('x', function (d, i) {
+        return i * 50 + 26;
+    })
+    .attr('y', 9)
+    .attr('text-anchor', 'middle')
+    .attr('alignment-baseline', "middle")
+    .attr('font-size', 14)
+    .attr('fill', '#000');
 
 var glevel = 0;
 
@@ -89,7 +126,8 @@ function setHeightAttribute(d, j) {
         return 0;
     return YScale(d.value);
 }
-
+var pressLegendTimer;
+var pressGraphTimer;
 
 canvas
     .append('g')
@@ -117,10 +155,14 @@ canvas
         return color(d.grade);
     })
     .on('click', function (d, i) {
-        var unselectedSet = new Set(unselectedList);
-        unselectedSet.add(i);
-        unselectedList = Array.from(unselectedSet);
-
+        if(unselectedList.length !== gradeToUnselectedListIndex.range().length - 1){
+            var unselectedSet = new Set(gradeToUnselectedListIndex.range());
+            unselectedSet.delete(i);
+            unselectedList = Array.from(unselectedSet);
+        }
+        else{
+            unselectedList = [];
+        }
         update();
     })
     .on('mouseover', function (d) {
@@ -130,11 +172,21 @@ canvas
     .on('mouseout', function (d) {
         d3.select(this)
             .style('opacity', 1);
-    });
+    })
+    .on('mouseup', function (d) {                   //_
+        clearTimeout(pressGraphTimer);              // |
+    })                                              // |
+    .on('mousedown', function (d,i) {               // |
+        pressGraphTimer = window.setTimeout(function() { //implementation of LongPress functionality with some funny behaviour. It calls click when I release apart from calling mouseUp
+            var unselectedSet = new Set(gradeToUnselectedListIndex.range());
+            unselectedSet.delete(i);
+            unselectedList = Array.from(unselectedSet);
+            update();
+        },1000);                                    // |
+    });                                             //_|;;
 
 var new_scaling = d3.scaleBand()
     .domain(freqData.map(function (d) {
-        // debugger;
         var total = 0;
         total = d3.max(d.freq, function (dd) {
             total += dd.value;
@@ -143,16 +195,17 @@ var new_scaling = d3.scaleBand()
         return d.State + ' [' + total + ']';
     }))
     .rangeRound([0, width])
-    .padding(0.1);
+    .padding(0.5);
 
 canvas.append("g").attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(-5," + height + ")")
     .attr('font-size', 15)
     .call(d3.axisBottom(new_scaling).tickSize(0).tickPadding(6));
 
 function update() {
     var unselectedSet = new Set(unselectedList);
     YScale = updateYscale(unselectedList);
+    
     canvas
         .selectAll('g.main g')
         .selectAll('rect')
@@ -160,6 +213,7 @@ function update() {
         .duration(1000)
         .attr('y', setYAttribute)
         .attr('height', setHeightAttribute);
+
     legend
         .selectAll('rect')
         .attr('fill', function (d, i) {
