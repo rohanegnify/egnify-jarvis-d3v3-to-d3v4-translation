@@ -11,7 +11,7 @@ var margin = {
     width = 740 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-var canvas = d3.select('body')
+var canvas = d3.select('body') //d3 dom pointer to canvas. canvas here indicates drawing area. NOT html5 canvas
     .append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
@@ -48,7 +48,7 @@ var legend = canvas.append('g')
     .attr('class', 'legend_class')
     .attr('transform', 'translate(10,' + (height + margin.bottom - 20) + ')')
     .selectAll('.legend')
-    .data(color.domain().slice())
+    .data(color.domain())
     .enter();
 
 legend.append('rect')
@@ -94,11 +94,11 @@ function update(freqData){
         d.freq.forEach(function (v) {
             v.yo = previous;
             v.y1 = v.value;
-
             previous += v.value;
         })
         d.total = previous;
     });
+
     var scaling = d3.scaleBand()
         .domain(freqData.map(function (d) {
             return d.State;
@@ -194,7 +194,6 @@ function update(freqData){
         .attr('font-size', 11)
 }
 
-
 function clicked(d) {
     freqData1.forEach(function (e) {
         e.freq.forEach(function (k) {
@@ -207,9 +206,7 @@ function clicked(d) {
                     k.y01 = null;
                 }
             }
-
         })
-
     })
     update(freqData1);
 }

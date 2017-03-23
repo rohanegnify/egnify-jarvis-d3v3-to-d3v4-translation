@@ -1,5 +1,5 @@
 svg {
-background-color:#FFF;
+    background-color:#FFF;
 }
 div.tooltip {	
     position: absolute;			
@@ -10,9 +10,9 @@ div.tooltip {
     font: 12px sans-serif;		
     background: #ddd;
     border: 0px;		
-    border-radius: 8px;			
+    border-radius: 4px;			
     pointer-events: none;			
 }
 .legend_class rect:hover{
-cursor:pointer;
+    cursor:pointer;
 }
