@@ -61,20 +61,6 @@ legend.append('rect')
     .attr('fill', function (d, i) {
         return color(d);
     })
-    .on('click', function (d,i) {
-        if(unselectedList.length !== gradeToUnselectedListIndex.range().length - 1 || unselectedList.indexOf(i) !== -1){
-                var unselectedSet = new Set(unselectedList);
-            if(unselectedSet.has(i))
-                unselectedSet.delete(i);
-            else
-                unselectedSet.add(i);
-            unselectedList = Array.from(unselectedSet);
-        }
-        else{
-            unselectedList = [];
-        }
-        update();
-    })
     .on('mouseover', function (d) {
         d3.select(this)
             .style('opacity', 0.75);
@@ -83,13 +69,29 @@ legend.append('rect')
         d3.select(this)
             .style('opacity', 1);
     })
-    .on('mouseup', function (d) {                   //_
-        clearTimeout(pressLegendTimer);             // |
+    .on('mouseup', function (d,i) {                 //_
+        if(unselectedList.length === gradeToUnselectedListIndex.range().length - 1)
+        clearTimeout(pressLegendTimer);
+        if(unselectedList.length !== gradeToUnselectedListIndex.range().length - 1 || unselectedList.indexOf(i) !== -1){
+                var unselectedSet = new Set(unselectedList);
+            if(unselectedSet.has(i))
+                unselectedSet.delete(i);
+            else
+                unselectedSet.add(i);
+            unselectedList = Array.from(unselectedSet);
+        }                                           // |
+        else{                                       // |
+            unselectedList = originalUnselectedList;// |
+        }                                           // |
+        update();                                   // |
     })                                              // |
     .on('mousedown', function (d,i) {               // |
-        pressLegendTimer = window.setTimeout(function() { //implementation of LongPress functionality with some funny behaviour. It calls click when I release apart from calling mouseUp
+        pressLegendTimer = window.setTimeout(function() { //implementation of LongPress functionality
+            pressLegendTimer = null;
             var unselectedSet = new Set(gradeToUnselectedListIndex.range());
             unselectedSet.delete(i);
+            if(unselectedList.length !== gradeToUnselectedListIndex.range().length())
+                originalUnselectedList = unselectedList;
             unselectedList = Array.from(unselectedSet);
             update();
         },1000);                                    // |
@@ -126,8 +128,10 @@ function setHeightAttribute(d, j) {
         return 0;
     return YScale(d.value);
 }
+
 var pressLegendTimer;
 var pressGraphTimer;
+var originalUnselectedList = [];
 
 canvas
     .append('g')
@@ -154,17 +158,6 @@ canvas
     .style('fill', function (d) {
         return color(d.grade);
     })
-    .on('click', function (d, i) {
-        if(unselectedList.length !== gradeToUnselectedListIndex.range().length - 1){
-            var unselectedSet = new Set(gradeToUnselectedListIndex.range());
-            unselectedSet.delete(i);
-            unselectedList = Array.from(unselectedSet);
-        }
-        else{
-            unselectedList = [];
-        }
-        update();
-    })
     .on('mouseover', function (d) {
         d3.select(this)
             .style('opacity', 0.75);
@@ -173,13 +166,27 @@ canvas
         d3.select(this)
             .style('opacity', 1);
     })
-    .on('mouseup', function (d) {                   //_
-        clearTimeout(pressGraphTimer);              // |
-    })                                              // |
-    .on('mousedown', function (d,i) {               // |
-        pressGraphTimer = window.setTimeout(function() { //implementation of LongPress functionality with some funny behaviour. It calls click when I release apart from calling mouseUp
+    .on('mouseup', function (d,i) {                  //_
+        if(pressGraphTimer)
+            clearTimeout(pressGraphTimer);
+        else if(unselectedList.length !== gradeToUnselectedListIndex.range().length - 1){
             var unselectedSet = new Set(gradeToUnselectedListIndex.range());
             unselectedSet.delete(i);
+            unselectedList = Array.from(unselectedSet);
+        }
+        else{
+            unselectedList = originalUnselectedList;
+        }
+        update();                                   // |
+    })                                              // |
+    .on('mousedown', function (d,i) {               // |
+        originalUnselectedList = [];
+        pressGraphTimer = window.setTimeout(function() { //implementation of LongPress functionality with some funny behaviour. It calls click when I release apart from calling mouseUp
+            pressGraphTimer = null;
+            var unselectedSet = new Set(gradeToUnselectedListIndex.range());
+            unselectedSet.delete(i);
+            if(unselectedList.length !== gradeToUnselectedListIndex.range().length())
+                originalUnselectedList = unselectedList; // store unselectedList in temp variable
             unselectedList = Array.from(unselectedSet);
             update();
         },1000);                                    // |
