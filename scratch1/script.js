@@ -193,24 +193,37 @@ canvas
         },1000);                                    // |
     });                                             //_|;;
 
-var new_scaling = d3.scaleBand()
-    .domain(freqData.map(function (d) {
-        var total = 0;
-        total = d3.max(d.freq, function (dd) {
-            total += dd.value;
-            return total;
-        })
-        return d.State + ' [' + total + ']';
-    }))
+var new_scaling = update_new_Scaling(unselectedList);
+
+
+function update_new_Scaling(ignoreList){
+    return d3.scaleBand()
+        .domain(freqData.map(function (d) {
+            var total = 0;
+            // debugger;
+            // removeUnselectedGrades(d.freq, ignoreList)
+            total = d3.max(removeUnselectedGrades(d.freq, ignoreList), function (dd) {
+                total += dd.value;
+                return total;
+            })
+            return d.State + ' [' + total + ']';
+        }))
     .rangeRound([0, width])
     .padding(0.5);
+}
 
-canvas.append("g").attr("class", "x axis")
+var axis = canvas.append("g").attr("class", "x axis")
     .attr("transform", "translate(-5," + height + ")")
     .attr('font-size', 15)
     .call(d3.axisBottom(new_scaling).tickSize(0).tickPadding(6));
 
+
 function update() {
+    new_scaling = update_new_Scaling(unselectedList);
+    axis
+        .transition()
+        .duration(1000)
+        .call(d3.axisBottom(new_scaling).tickSize(0).tickPadding(6));
     var unselectedSet = new Set(unselectedList);
     YScale = updateYscale(unselectedList);
     
