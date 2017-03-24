@@ -70,7 +70,8 @@ legend.append('rect')
             .style('opacity', 1);
     })
     .on('mouseup', function (d,i) {                 //_
-        if(unselectedList.length === gradeToUnselectedListIndex.range().length - 1)
+        // if(unselectedList.length === gradeToUnselectedListIndex.range().length - 1)
+        if(pressLegendTimer)
             clearTimeout(pressLegendTimer);         // |
         if(unselectedList.length !== gradeToUnselectedListIndex.range().length - 1 || unselectedList.indexOf(i) !== -1){
                 var unselectedSet = new Set(unselectedList);
