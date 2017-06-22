@@ -1,0 +1,64 @@
+
+	.node {
+		cursor: pointer;
+	}
+ 
+	.node circle {
+	  fill: #fff;
+	  stroke: steelblue;
+	  stroke-width: 3px;
+	}
+ 
+	.node text {
+	  font: 12px sans-serif;
+	}
+ 
+	.link {
+	  fill: none;
+	  stroke: #000;
+	  stroke-width: 1px;
+	}
+	
+	.r1{
+	
+	font-family: 'Oswald', sans-serif;
+	font-size:60px;
+	line-height:50px;
+	text-align:center;
+}
+.r11{
+	font-family: 'Patrick Hand', cursive;
+	font-size:20px;
+	color:#101010;
+	display: block;
+	text-align:center;
+}
+td{
+   padding:8px;
+}
+.content-box-gray .content {
+    overflow: hidden;
+    padding: 10px;
+    font-size: 12px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid #C1C1C1;
+    color: #3385FF;
+    box-shadow: 0 0 20px #D4D2D2;
+}
+.content-box-gray .title {
+    height:20px;
+    line-height:20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background:#101010;
+    font-size:15px;
+    font-weight:bold;
+    font-family:verdana;
+    display:block;
+    color:white;
+    display:block;
+    padding:10px;
+    border: 1px solid #C1C1C1;
+    border-bottom:none;    
+}

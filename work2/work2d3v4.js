@@ -1,28 +1,30 @@
 function dashboard(id, fData){
     var barColor = 'steelblue';
-    function segColor(c){ return {A1:"#0F4FA0", A2:"#2196F3",B1:"#4CAF50",B2:"#8BC34A", C1:"#FFB300",C2:"#FFCA28",D1:"#5B2A22", D2:"#795548",E:"#F4201F"}[c]; }
+    function segColor(c){ return { A1:"#0F4FA0", A2:"#2196F3",B1:"#4CAF50",B2:"#8BC34A", C1:"#FFB300",C2:"#FFCA28",D1:"#5B2A22", D2:"#795548",E:"#F4201F" }[c]; }
     
     // compute total for each state.
     fData.forEach(function(d){
-        d.total=d.freq.A1+d.freq.A2+d.freq.B1+d.freq.B2+d.freq.C1+d.freq.C2+d.freq.D1+d.freq.D2+d.freq.E;});
-   
+        d.total = Object.values(d.freq).reduce(function(acc, val) {
+            return acc + val;
+        }, 0);
+    });
+
     // function to handle histogram.
     function histoGram(fD){
         var hG={} ,hGDim = {t: 20, r: 0, b: 10, l: 0};
         hGDim.w = 500 - hGDim.l - hGDim.r, 
         hGDim.h = 300 - hGDim.t - hGDim.b;
-            
         //create svg for histogram.
-       
+
         var hGsvg = d3.select(id).append("svg")
             .attr("width", hGDim.w + hGDim.l + hGDim.r)
             .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
             .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")")
-                    
+
         // create function for x-axis mapping.
         var x = d3.scaleBand().rangeRound([0, hGDim.w]).padding( 0.1)
                 .domain(fD.map(function(d) { return d[0]; }));
-        
+
         // Add x-axis to the histogram svg.
         hGsvg.append("g").attr("class", "x axis")
             .attr("transform", "translate(0," + hGDim.h + ")")
@@ -35,7 +37,7 @@ function dashboard(id, fData){
         // Create bars for histogram to contain rectangles and freq labels.
         var bars = hGsvg.selectAll(".bar").data(fD).enter()
                 .append("g").attr("class", "bar");
-        // debugger;
+
         //create the rectangles.
         bars.append("rect")
             .attr("x", function(d) { return x(d[0]); })
@@ -54,7 +56,7 @@ function dashboard(id, fData){
         
         function mouseover(d){  // utility function to be called on mouseover.
             // filter for selected state.
-            
+            debugger;
             var st = fData.filter(function(s){ return s.State == d[0];})[0],
                 nD = d3.keys(st.freq).map(function(s){ return {type:s, freq:st.freq[s]};});
                
@@ -135,7 +137,7 @@ function dashboard(id, fData){
         function arcTween(a) {
             var i = d3.interpolate(this._current, a);
             this._current = i(0);
-            return function(t) { return arc(i(t));    };
+            return function(t) { return arc(i(t)); };
         }    
         return pC;
     }
@@ -143,14 +145,12 @@ function dashboard(id, fData){
     // function to handle legend.
     function legend(lD){
         var leg = {};
-            
+
         // create table for legend.
         var legend = d3.select(id).append("table").attr('class','legend');
-        
+
         // create one row per segment.
-        
         var tr = legend.append("tbody").selectAll("tr").data(lD).enter().append("tr");
-        
             
         // create the first column for each segment.
         tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
@@ -201,7 +201,7 @@ function dashboard(id, fData){
         leg= legend(tF);  // create the legend.
 }
 
-var freqData=[
+var freqData = [
 {State:'I',freq:{A1:47, A2:13, B1:2,B2:4,C1:10,C2:1,D1:10,D2:5,E:50}},
 {State:'II',freq:{A1:11, A2:4, B1:6,B2:9,C1:10,C2:11,D1:0,D2:5,E:3}},
 {State:'III',freq:{A1:9, A2:21, B1:4,B2:4,C1:10,C2:10,D1:10,D2:5,E:3}},
